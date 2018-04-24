@@ -9,3 +9,7 @@ body{
 #toggleBtnDiv{
     margin: 5px;
 }
+
+.graph{
+    width: 50%;
+}

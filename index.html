@@ -18,21 +18,22 @@
 
         <!-- Tabs -->
         <div id='toggleBtnDiv'>  
-            <button>Line Plot</button>
-            <button>Bar Graph</button>
+            <button ng-click="currentGraph = 'bar'">Line Graph</button>
+            <button ng-click="currentGraph = 'line'">Bar Graph</button>
         </div>
       
 
         <!-- placeholder for graph -->
-        <img src='http://www.glowscript.org/docs/VPythonDocs/images/graph.png'>
+        <img class="graph bar" ng-show="currentGraph === 'bar'" src='http://www.glowscript.org/docs/VPythonDocs/images/graph.png'>
+        <img class="graph line" ng-show="currentGraph === 'line'" src='https://openclipart.org/download/233693/1449602440.svg'>
 
         <!-- Filter Selection -->
         <div id="filterParent">
             <lable for='filterOptions'>Filters:</label>
             <select name='filterOptions' id='filterOptions'>
-            <option>Time</option>
-            <option>Date</option>
-            <option>Cost</option>
+                <option>Time</option>
+                <option>Date</option>
+                <option>Cost</option>
             </select>
         </div>
 
