@@ -3,9 +3,11 @@
   <head>
     <link href='style.css' rel='stylesheet' type='text/css'>
     <script data-require='angular.js@1.3.10' data-semver='1.3.10' src='https://code.angularjs.org/1.3.10/angular.js'></script>
+    <script src="node_modules\chart.js\dist\Chart.min.js"></script>
+    <script src="node_modules\angular-chart.js\dist\angular-chart.min.js"></script>
   </head>
 
-  <body ng-controller='MyCtrl'>
+  <body>
 
         <!-- Input Form -->
         <h1>TSA Data</h1>
@@ -15,17 +17,33 @@
             <input type='num' placeholder='Value'>
             <button>Submit</button>
         </form>
-
         <!-- Tabs -->
-        <div id='toggleBtnDiv'>  
-            <button ng-click="currentGraph = 'bar'">Line Graph</button>
-            <button ng-click="currentGraph = 'line'">Bar Graph</button>
-        </div>
+        <div ng-controller='ToggleCtrl'>  
+            <div id='toggleBtnDiv' >  
+                <button ng-click="currentGraph = 'line'">Line Graph</button>
+                <button ng-click="currentGraph = 'bar'">Bar Graph</button>
+            </div>
       
-
         <!-- placeholder for graph -->
-        <img class="graph bar" ng-show="currentGraph === 'bar'" src='http://www.glowscript.org/docs/VPythonDocs/images/graph.png'>
-        <img class="graph line" ng-show="currentGraph === 'line'" src='https://openclipart.org/download/233693/1449602440.svg'>
+            <div id="chartParent" style="width: 70%; margin: auto;">
+                <canvas  
+                    ng-show="currentGraph === 'bar'" 
+                    id="bar" 
+                    class="chart chart-bar"
+                    chart-data="data" 
+                    chart-labels="labels">
+                </canvas>
+
+                <canvas 
+                    ng-show="currentGraph === 'line'" 
+                    id="line" 
+                    class="chart chart-line" 
+                    chart-data="data"
+                    chart-labels="labels"
+                    chart-click="onClick">
+                </canvas>
+            </div>
+        </div>
 
         <!-- Filter Selection -->
         <div id="filterParent">
