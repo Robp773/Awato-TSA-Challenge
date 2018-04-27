@@ -109,22 +109,33 @@ angular.module('root-app', ['chart.js'])
   })
 
   .controller('LineCtrl', function ($scope, filter, getData) {  
-    getData.then(function(res){    
+    getData.then(function(res){ 
       $scope.airlineFilter = ['American Airlines', 'Delta Air Lines', 'Lufthansa', 'Alaska Airlines'];
       $scope.lineGraphData = filter.lineGraph(res, 'lineValueLost', $scope.airlineFilter);
       $scope.data = $scope.lineGraphData.dataArray;
       $scope.labels = $scope.lineGraphData.labelOrder;
+      $scope.totalLossesAvg = $scope.lineGraphData.totalLossesAvg;
     });
   })
 
-  .controller('BarCtrl', function ($scope, filter, getData) {
+  .controller('BarCtrl', function ($scope, filter, getData) { 
     getData.then(function(res){    
-      $scope.airportFilter = ['CVG','DEN','LAX', 'ORD', 'SEA'];
+      $scope.airportFilter = ['CVG','DEN','LAX', 'ORD', 'SEA']; 
       $scope.barGraphData = filter.barGraph(res, 'barAvgClaims', $scope.airportFilter);
       $scope.data = $scope.barGraphData.dataArray;
       $scope.labels = $scope.barGraphData.labelOrder;
       let standardDeviationArrary = $scope.barGraphData.stdDevArray;
-    });
+      $scope.options = {
+        tooltips: {
+          enabled: true,
+          callbacks: {
+            label: function(tooltipItem) {
+              return `Mean: ${tooltipItem.yLabel} \n SD: ${Math.round(standardDeviationArrary[tooltipItem.index])}`;
+            }
+          }
+        },
+      };
+    });        
   })
 
   .controller('ToggleCtrl', function($scope) {
