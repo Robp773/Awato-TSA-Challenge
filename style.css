@@ -1,5 +1,6 @@
 body{
     text-align: center;
+    font-family: 'Faustina', serif;
 }
 
 #dataForm{
@@ -8,4 +9,12 @@ body{
 
 #toggleBtnDiv{
     margin: 5px;
+}
+
+#line{
+
+}
+
+#chartParent{
+    width: 35%;
 }

@@ -5,6 +5,7 @@
     <script data-require='angular.js@1.3.10' data-semver='1.3.10' src='https://code.angularjs.org/1.3.10/angular.js'></script>
     <script src="node_modules\chart.js\dist\Chart.min.js"></script>
     <script src="node_modules\angular-chart.js\dist\angular-chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Faustina" rel="stylesheet">
   </head>
 
   <body>
@@ -25,30 +26,32 @@
             </div>
       
         <!-- placeholder for graph -->
-            <div id="chartParent" style="width: 70%; margin: auto;">
-                <div ng-controller="BarCtrl">
-                    <canvas
-                        ng-show="metric === 'barAvgClaims'" 
+            <div id="chartParent" style="width: 55%; margin: auto;">
+
+                <div ng-controller="BarCtrl" ng-show="metric === 'barAvgClaims'" >
+                    <h3>Average Claims per Month by Airport</h3>
+                    <canvas     
                         id="bar" 
+                        chart-options="options"
                         class="chart chart-bar"
                         chart-data="data" 
-                        chart-labels="labels"
-                        chart-colors="['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360']">
+                        chart-labels="labels" 
+                        chart-color="color">
                     </canvas>
                 </div>
 
-                <div ng-controller="LineCtrl"> 
-                    <div ng-show="metric === 'lineValueLost'">${{totalLossesAvg}} Combined Avg. Losses</div>
+                <div ng-controller="LineCtrl" ng-show="metric === 'lineValueLost'">
+                    <h3>Average Value Lost a Month by Airline</h3>
+                    <div>${{totalLossesAvg}} Combined Avg. Losses</div>
                     <canvas 
                         ng-show="metric === 'lineValueLost'" 
                         id="line" 
-                        class="chart chart-line" 
+                        class="chart chart-line"                        
+                        chart-options="options"
                         chart-data="data"
                         chart-labels="labels">
-                  </canvas>
+                    </canvas>
                 </div>
-               
-
             </div>
         </div>
 
