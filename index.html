@@ -18,30 +18,37 @@
             <button>Submit</button>
         </form>
         <!-- Tabs -->
-        <div ng-controller='ToggleCtrl'>  
+        <div ng-controller='ToggleCtrl' ng-model='metric'>  
             <div id='toggleBtnDiv' >  
-                <button ng-click="currentGraph = 'line'">Line Graph</button>
-                <button ng-click="currentGraph = 'bar'">Bar Graph</button>
+                <button ng-click="toggle('lineValueLost')">Line Graph</button>
+                <button ng-click="toggle('barAvgClaims')">Bar Graph</button>
             </div>
       
         <!-- placeholder for graph -->
             <div id="chartParent" style="width: 70%; margin: auto;">
-                <canvas  
-                    ng-show="currentGraph === 'bar'" 
-                    id="bar" 
-                    class="chart chart-bar"
-                    chart-data="data" 
-                    chart-labels="labels">
-                </canvas>
+                <div ng-controller="BarCtrl">
+                    <canvas
+                        ng-show="metric === 'barAvgClaims'" 
+                        id="bar" 
+                        class="chart chart-bar"
+                        chart-data="data" 
+                        chart-labels="labels"
+                        chart-colors="['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360']">
+                    </canvas>
+                </div>
 
-                <canvas 
-                    ng-show="currentGraph === 'line'" 
-                    id="line" 
-                    class="chart chart-line" 
-                    chart-data="data"
-                    chart-labels="labels"
-                    chart-click="onClick">
-                </canvas>
+                <div ng-controller="LineCtrl"> 
+                    <div ng-show="metric === 'lineValueLost'">${{totalLossesAvg}} Combined Avg. Losses</div>
+                    <canvas 
+                        ng-show="metric === 'lineValueLost'" 
+                        id="line" 
+                        class="chart chart-line" 
+                        chart-data="data"
+                        chart-labels="labels">
+                  </canvas>
+                </div>
+               
+
             </div>
         </div>
 
