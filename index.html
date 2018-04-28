@@ -8,29 +8,22 @@
     <link href="https://fonts.googleapis.com/css?family=Faustina" rel="stylesheet">
   </head>
 
-  <body>
+  <body ng-controller='ToggleCtrl' ng-model='metric'>
 
         <!-- Input Form -->
-        <h1>TSA Data</h1>
-        <form id='dataForm'>
-            <input type='date'/>
-            <input type='text' placeholder='Code' />
-            <input type='num' placeholder='Value'>
-            <button>Submit</button>
-        </form>
-        <!-- Tabs -->
-        <div ng-controller='ToggleCtrl' ng-model='metric'>  
-            <div id='toggleBtnDiv' >  
-                <button ng-click="toggle('lineValueLost')">Line Graph</button>
-                <button ng-click="toggle('barAvgClaims')">Bar Graph</button>
-            </div>
+        <h1>TSA 2010 Claims Data</h1>       
       
         <!-- placeholder for graph -->
-            <div id="chartParent" style="width: 55%; margin: auto;">
+            <div id="chartParent" > 
+                <div >  
+                <div id='toggleBtnDiv' >  
+                    <button class='toggleBtn' ng-class="{'active' : metric == 'lineValueLost'}" ng-click="metric = 'lineValueLost'">Line Graph</button>
+                    <button class='toggleBtn' ng-class="{'active' : metric == 'barAvgClaims'}" ng-click="metric = 'barAvgClaims'">Bar Graph</button>
+                </div>
 
                 <div ng-controller="BarCtrl" ng-show="metric === 'barAvgClaims'" >
                     <h3>Average Claims per Month by Airport</h3>
-                    <canvas     
+                    <canvas ng-class="{'appear' : metric == 'barAvgClaims'}"   
                         id="bar" 
                         chart-options="options"
                         class="chart chart-bar"
@@ -44,6 +37,7 @@
                     <h3>Average Value Lost a Month by Airline</h3>
                     <div>${{totalLossesAvg}} Combined Avg. Losses</div>
                     <canvas 
+                        ng-class="{'appear' : metric == 'lineValueLost'}"
                         ng-show="metric === 'lineValueLost'" 
                         id="line" 
                         class="chart chart-line"                        
@@ -55,19 +49,43 @@
             </div>
         </div>
 
+        <div id="statsAndForm">
+        <form id='dataForm'>
+            <legend class="formLegend">Add Claim Data</legend>
+                <input class='dataInput' type='date'/>
+                <input class='dataInput' type='text' placeholder="Airport Code" />
+                <input class='dataInput' type='text' placeholder="Airline Name" />
+                <input class='dataInput' type='num' placeholder='Value Lost'>
+                <button id="dataSubmitBtn">Submit</button>
+            </form>
+
         <!-- Filter Selection -->
         <div id="filterParent">
-            <lable for='filterOptions'>Filters:</label>
-            <select name='filterOptions' id='filterOptions'>
-                <option>Time</option>
-                <option>Date</option>
-                <option>Cost</option>
-            </select>
-        </div>
+            <form ng-show="metric === 'barAvgClaims'" class="checkboxForm" >
+                <legend class="formLegend">Filter by Airport Code</legend>
+                <div class="checkboxForm" ng-repeat="name in airportFilter">
+                    <input class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
+                </div>
+            </form>
 
+            <form ng-show="metric === 'lineValueLost'"  >
+                <legend class="formLegend">Filter by Airline</legend>
+                <div class="checkboxForm" ng-repeat="name in airlineFilter">
+                    <input class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
+                </div>
+            </form>
+        </div>
         <!-- Stats -->
-        <h3>Statistics</h3>
-        <div>Additonal Stats...</div>
+        <div id="statsParent">
+            <h3 id="statsHeader">Statistics</h3>
+            <div>Additonal Stats...</div>
+            <div>Additonal Stats...</div>
+            <div>Additonal Stats...</div>
+            <div>Additonal Stats...</div>
+            <div>Additonal Stats...</div>
+        </div>
+        
+    </div>
 
         <script src='script.js'></script>
     </body>
