@@ -1,92 +1,117 @@
 <!DOCTYPE html>
 <html ng-app='root-app'>
-  <head>
+
+<head>
     <link href='style.css' rel='stylesheet' type='text/css'>
     <script data-require='angular.js@1.3.10' data-semver='1.3.10' src='https://code.angularjs.org/1.3.10/angular.js'></script>
     <script src="node_modules\chart.js\dist\Chart.min.js"></script>
     <script src="node_modules\angular-chart.js\dist\angular-chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Faustina" rel="stylesheet">
-  </head>
+</head>
 
-  <body ng-controller='ToggleCtrl' ng-model='metric'>
+<body ng-controller='FilterToggleCtrl' ng-model='metric'>
 
-        <!-- Input Form -->
-        <h1>TSA 2010 Claims Data</h1>       
-      
-        <!-- placeholder for graph -->
-            <div id="chartParent" > 
-                <div >  
-                <div id='toggleBtnDiv' >  
-                    <button class='toggleBtn' ng-class="{'active' : metric == 'lineValueLost'}" ng-click="metric = 'lineValueLost'">Line Graph</button>
-                    <button class='toggleBtn' ng-class="{'active' : metric == 'barAvgClaims'}" ng-click="metric = 'barAvgClaims'">Bar Graph</button>
-                </div>
+    <h1>TSA 2010 Claims Data</h1>
 
-                <div ng-controller="BarCtrl" ng-show="metric === 'barAvgClaims'" >
-                    <h3>Average Claims per Month by Airport</h3>
-                    <canvas ng-class="{'appear' : metric == 'barAvgClaims'}"   
-                        id="bar" 
-                        chart-options="options"
-                        class="chart chart-bar"
-                        chart-data="data" 
-                        chart-labels="labels" 
-                        chart-color="color">
-                    </canvas>
-                </div>
+    <div id='toggleBtnDiv'>
+        <button class='toggleBtn' ng-class="{'active' : metric == 'lineValueLost'}" ng-click="metric = 'lineValueLost'">Line Graph</button>
+        <button class='toggleBtn' ng-class="{'active' : metric == 'barAvgClaims'}" ng-click="metric = 'barAvgClaims'">Bar Graph</button>
+    </div>
 
-                <div ng-controller="LineCtrl" ng-show="metric === 'lineValueLost'">
-                    <h3>Average Value Lost a Month by Airline</h3>
-                    <div>${{totalLossesAvg}} Combined Avg. Losses</div>
-                    <canvas 
-                        ng-class="{'appear' : metric == 'lineValueLost'}"
-                        ng-show="metric === 'lineValueLost'" 
-                        id="line" 
-                        class="chart chart-line"                        
-                        chart-options="options"
-                        chart-data="data"
-                        chart-labels="labels">
-                    </canvas>
-                </div>
-            </div>
+    <div class="graphFilterParent" ng-controller="BarCtrl" ng-show="metric === 'barAvgClaims'">
+        <div class="chartParent">
+            <h3>Average Claims per Month by Airport</h3>
+            <canvas ng-class="{'appear' : metric == 'barAvgClaims'}" id="bar" chart-options="options" class="chart chart-bar" chart-data="barData"
+                chart-labels="barLabels" chart-color="color">
+            </canvas>
         </div>
 
-        <div id="statsAndForm">
-        <form id='dataForm'>
-            <legend class="formLegend">Add Claim Data</legend>
-                <input class='dataInput' type='date'/>
+        <div class="filterStatsParent">
+            <form id='dataForm'>
+                <legend class="formLegend">Add Claim Data</legend>
+                <input class='dataInput' type='date' />
                 <input class='dataInput' type='text' placeholder="Airport Code" />
                 <input class='dataInput' type='text' placeholder="Airline Name" />
                 <input class='dataInput' type='num' placeholder='Value Lost'>
                 <button id="dataSubmitBtn">Submit</button>
             </form>
-
-        <!-- Filter Selection -->
-        <div id="filterParent">
-            <form ng-show="metric === 'barAvgClaims'" class="checkboxForm" >
-                <legend class="formLegend">Filter by Airport Code</legend>
-                <div class="checkboxForm" ng-repeat="name in airportFilter">
-                    <input class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
-                </div>
-            </form>
-
-            <form ng-show="metric === 'lineValueLost'"  >
-                <legend class="formLegend">Filter by Airline</legend>
-                <div class="checkboxForm" ng-repeat="name in airlineFilter">
-                    <input class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
-                </div>
-            </form>
+            <div class="filterParent">
+                <form class="checkboxForm">
+                    <legend class="formLegend">Filter by Airport Code</legend>
+                    <div class="checkboxForm" ng-repeat="name in airportFilter">
+                        <input class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
+                    </div>
+                </form>
+            </div>
         </div>
-        <!-- Stats -->
-        <div id="statsParent">
-            <h3 id="statsHeader">Statistics</h3>
-            <div>Additonal Stats...</div>
-            <div>Additonal Stats...</div>
-            <div>Additonal Stats...</div>
-            <div>Additonal Stats...</div>
-            <div>Additonal Stats...</div>
-        </div>
-        
+    </div>
     </div>
 
-        <script src='script.js'></script>
-    </body>
+    <div class="graphFilterParent" ng-controller="LineCtrl" ng-show="metric === 'lineValueLost'">
+
+        <div class="chartParent">
+            <h3>Average Value Lost a Month by Airline</h3>
+            <div>${{totalLossesAvg}} Combined Avg. Losses</div>
+            <canvas ng-class="{'appear' : metric == 'lineValueLost'}" ng-show="metric === 'lineValueLost'" id="line" class="chart chart-line"
+                chart-options="options" chart-data="lineData" chart-labels="lineLabels">
+            </canvas>
+        </div>
+        <div class="filterStatsParent">
+            <form id='dataForm'>
+                <legend class="formLegend">Add Claim Data</legend>
+                <input class='dataInput' type='date' />
+                <input class='dataInput' type='text' placeholder="Airport Code" />
+                <input class='dataInput' type='text' placeholder="Airline Name" />
+                <input class='dataInput' type='num' placeholder='Value Lost'>
+                <button id="dataSubmitBtn">Submit</button>
+            </form>
+            <div class="filterParent">
+                <form class="checkboxForm">
+                    <legend class="formLegend">Filter by Airline Name</legend>
+                    <div class="checkboxForm" ng-repeat="name in airlineFilter">
+                        <input ng-click='filterAirlines(name)' class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
+                    </div>
+                </form>
+            </div>
+
+            <div id="statsParent">
+                <h3 id="statsHeader">Claim Numbers</h3>
+                <div>
+                    <table>
+                        <tr>
+                            <th>Airline</th>
+                            <th>Total</th>
+                            <th>Approved</th>
+                            <th>Denied</th>
+                            <th>Settled</th>
+                        </tr>
+                        <tr ng-repeat="(key, value) in lineGraphStats">
+                            <td>{{key}}</td>
+                            <td>{{lineGraphStats[key].claimStatus.totalClaims}}</td>
+                            <td>{{lineGraphStats[key].claimStatus.approved}}</td>
+                            <td>{{lineGraphStats[key].claimStatus.denied}}</td>
+                            <td>{{lineGraphStats[key].claimStatus.settled}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    </div>
+    </div>
+
+
+
+
+    </div>
+
+
+
+
+    <script src='script.js'></script>
+</body>
+
 </html>
