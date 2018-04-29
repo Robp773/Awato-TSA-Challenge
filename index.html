@@ -39,7 +39,7 @@
                 <form class="checkboxForm">
                     <legend class="formLegend">Filter by Airport Code</legend>
                     <div class="checkboxForm" ng-repeat="name in airportFilter">
-                        <input class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
+                        <input ng-click='filterAirports(name)' class='checkboxInput' type="checkbox" value="{{name}}">{{name}}</span>
                     </div>
                 </form>
             </div>
