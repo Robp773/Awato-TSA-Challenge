@@ -13,11 +13,11 @@
 
     <h1>TSA 2010 Claims Data</h1>
 
+
     <div id='toggleBtnDiv'>
         <button class='toggleBtn' ng-class="{'active' : metric == 'lineValueLost'}" ng-click="metric = 'lineValueLost'">Line Graph</button>
         <button class='toggleBtn' ng-class="{'active' : metric == 'barAvgClaims'}" ng-click="metric = 'barAvgClaims'">Bar Graph</button>
     </div>
-
     <div class="graphFilterParent" ng-controller="BarCtrl" ng-show="metric === 'barAvgClaims'">
         <div class="chartParent">
             <h3>Average Claims per Month by Airport</h3>
@@ -43,6 +43,25 @@
                     </div>
                 </form>
             </div>
+
+            <div id="statsParent">
+                <h3 id="statsHeader">Highest and Lowest Month</h3>
+                <div>
+                    <table>
+                        <tr>
+                            <th>Airline</th>
+                            <th>Highest</th>
+                            <th>Lowest</th>
+                        </tr>
+                        <tr ng-repeat="(key, value) in barGraphStats">
+                            <td>{{key}}</td>
+                            <td>{{barGraphStats[key].highest.month}} - {{barGraphStats[key].highest.claims}}</td>
+                            <td>{{barGraphStats[key].lowest.month}} - {{barGraphStats[key].lowest.claims}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
     </div>

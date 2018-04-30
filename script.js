@@ -42,7 +42,6 @@ angular.module('root-app', ['chart.js'])
     this.lineGraphData = function (result) {
       let labelOrder = [];
       let dataArray = [];
-      let stdDevArray = [];
       let statsObj = {};
 
       let totalMonthlyLoss = 0;
@@ -65,14 +64,33 @@ angular.module('root-app', ['chart.js'])
       let labelOrder = [];
       let dataArray = [];
       let stdDevArray = [];
-      // let statsObj = {};
+      let statsObj = {};
 
       for (let airport in result) {
+        let highest = result[airport].monthlyClaims[1];
+        let lowest = result[airport].monthlyClaims[1];
+        let dataObj = { highest: highest, lowest: lowest };
+
+        for (let month in result[airport].monthlyClaims) {
+          let strMonth;
+          let monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+          strMonth = monthArray[month - 1];
+          if (result[airport].monthlyClaims[month] > highest) {
+            dataObj.highest = { month: strMonth, claims: result[airport].monthlyClaims[month] };
+          }
+          if (result[airport].monthlyClaims[month] < lowest) {
+            dataObj.lowest = { month: strMonth, claims: result[airport].monthlyClaims[month] };
+          }
+        }
+
+        statsObj[airport] = dataObj;
+
         labelOrder.push(airport);
         dataArray.push(Math.round(result[airport].totalClaims / 12));
         stdDevArray.push(stdDeviation.sqrDiff(result[airport].monthlyClaims));
       }
-      return { labelOrder, dataArray, stdDevArray, };
+      return { labelOrder, dataArray, stdDevArray, statsObj };
     };
   })
 
@@ -177,6 +195,7 @@ angular.module('root-app', ['chart.js'])
       $scope.res = res;
       $scope.airportFilter = ['CVG', 'DEN', 'LAX', 'ORD', 'SEA'];
       let barGraphData = filter.barGraph(res, $scope.airportFilter);
+      $scope.barGraphStats = barGraphData.statsObj;
       $scope.barData = barGraphData.dataArray;
       $scope.barLabels = barGraphData.labelOrder;
       let standardDeviationArrary = barGraphData.stdDevArray;
@@ -207,6 +226,8 @@ angular.module('root-app', ['chart.js'])
       barGraphData = filter.barGraph($scope.res, $scope.filterArray);
       $scope.barData = barGraphData.dataArray;
       $scope.barLabels = barGraphData.labelOrder;
+      $scope.barGraphStats = barGraphData.statsObj;
+
     };
   })
 
