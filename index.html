@@ -13,7 +13,6 @@
 
     <h1>TSA 2010 Claims Data</h1>
 
-
     <div id='toggleBtnDiv'>
         <button class='toggleBtn' ng-class="{'active' : metric == 'lineValueLost'}" ng-click="metric = 'lineValueLost'">Line Graph</button>
         <button class='toggleBtn' ng-class="{'active' : metric == 'barAvgClaims'}" ng-click="metric = 'barAvgClaims'">Bar Graph</button>
@@ -27,13 +26,13 @@
         </div>
 
         <div class="filterStatsParent">
-            <form id='dataForm'>
+            <form id='dataForm' ng-controller="formCtrl" ng-submit="submit()">
                 <legend class="formLegend">Add Claim Data</legend>
-                <input class='dataInput' type='date' />
-                <input class='dataInput' type='text' placeholder="Airport Code" />
-                <input class='dataInput' type='text' placeholder="Airline Name" />
-                <input class='dataInput' type='num' placeholder='Value Lost'>
-                <button id="dataSubmitBtn">Submit</button>
+                <input ng-model='incidentDate' class='dataInput' type="text" placeholder="Date (1/1/2010)" />
+                <input ng-model='airportCode' class='dataInput' type='text' placeholder="Airport Code" />
+                <input ng-model='airlineName' class='dataInput' type='text' placeholder="Airline Name" />
+                <input ng-model='closeAmount' class='dataInput' type='num' placeholder='Value Lost'>
+                <button id="dataSubmitBtn" type="submit">Submit</button>
             </form>
             <div class="filterParent">
                 <form class="checkboxForm">
@@ -45,7 +44,7 @@
             </div>
 
             <div id="statsParent">
-                <h3 id="statsHeader">Highest and Lowest Month</h3>
+                <h3 id="statsHeader">Highest / Lowest Claim Months</h3>
                 <div>
                     <table>
                         <tr>
@@ -53,10 +52,10 @@
                             <th>Highest</th>
                             <th>Lowest</th>
                         </tr>
-                        <tr ng-repeat="(key, value) in barGraphStats">
+                        <tr ng-repeat="(key, value) in barStats">
                             <td>{{key}}</td>
-                            <td>{{barGraphStats[key].highest.month}} - {{barGraphStats[key].highest.claims}}</td>
-                            <td>{{barGraphStats[key].lowest.month}} - {{barGraphStats[key].lowest.claims}}</td>
+                            <td>{{barStats[key].highest.month}} - {{barStats[key].highest.claims}}</td>
+                            <td>{{barStats[key].lowest.month}} - {{barStats[key].lowest.claims}}</td>
                         </tr>
                     </table>
                 </div>
@@ -76,13 +75,13 @@
             </canvas>
         </div>
         <div class="filterStatsParent">
-            <form id='dataForm'>
+            <form id='dataForm' ng-controller="formCtrl" ng-submit="submit()">
                 <legend class="formLegend">Add Claim Data</legend>
-                <input class='dataInput' type='date' />
-                <input class='dataInput' type='text' placeholder="Airport Code" />
-                <input class='dataInput' type='text' placeholder="Airline Name" />
-                <input class='dataInput' type='num' placeholder='Value Lost'>
-                <button id="dataSubmitBtn">Submit</button>
+                <input ng-model='incidentDate' class='dataInput' type="text" placeholder="Date (1/1/2010)" />
+                <input ng-model='airportCode' class='dataInput' type='text' placeholder="Airport Code" />
+                <input ng-model='airlineName' class='dataInput' type='text' placeholder="Airline Name" />
+                <input ng-model='closeAmount' class='dataInput' type='num' placeholder='Value Lost'>
+                <button id="dataSubmitBtn" type="submit">Submit</button>
             </form>
             <div class="filterParent">
                 <form class="checkboxForm">
@@ -115,21 +114,10 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
     </div>
     </div>
-
-
-
-
     </div>
-
-
-
-
     <script src='script.js'></script>
 </body>
 

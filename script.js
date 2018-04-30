@@ -61,6 +61,7 @@ angular.module('root-app', ['chart.js'])
     };
 
     this.barGraphData = function (result) {
+
       let labelOrder = [];
       let dataArray = [];
       let stdDevArray = [];
@@ -135,6 +136,7 @@ angular.module('root-app', ['chart.js'])
     };
 
     this.barGraph = function (data, airportFilter) {
+
       let resultsObj = {};
       for (let i = 0; i < data.length; i++) {
         for (let x = 0; x < airportFilter.length; x++) {
@@ -159,13 +161,13 @@ angular.module('root-app', ['chart.js'])
   .controller('LineCtrl', function ($scope, $rootScope, filter, getData) {
     $scope.filterArray = [];
     getData.then(function (res) {
-      $scope.res = res;
-      $scope.airlineFilter = ['American Airlines', 'Delta Air Lines', 'Lufthansa', 'Alaska Airlines', 'Jet Blue'];
+      $rootScope.res = res;
+      $rootScope.airlineFilter = ['American Airlines', 'Delta Air Lines', 'Lufthansa', 'Alaska Airlines', 'Jet Blue'];
       let lineGraphData = filter.lineGraph($scope.res, $scope.airlineFilter);
-      $scope.lineData = lineGraphData.dataArray;
-      $scope.lineLabels = lineGraphData.labelOrder;
-      $scope.totalLossesAvg = lineGraphData.totalLossesAvg;
-      $scope.lineGraphStats = lineGraphData.statsObj;
+      $rootScope.lineData = lineGraphData.dataArray;
+      $rootScope.lineLabels = lineGraphData.labelOrder;
+      $rootScope.totalLossesAvg = lineGraphData.totalLossesAvg;
+      $rootScope.lineGraphStats = lineGraphData.statsObj;
     });
 
     $scope.filterAirlines = function (name) {
@@ -182,22 +184,22 @@ angular.module('root-app', ['chart.js'])
       }
 
       lineGraphData = filter.lineGraph($scope.res, $scope.filterArray);
-      $scope.lineData = lineGraphData.dataArray;
-      $scope.lineLabels = lineGraphData.labelOrder;
-      $scope.totalLossesAvg = lineGraphData.totalLossesAvg;
-      $scope.lineGraphStats = lineGraphData.statsObj;
+      $rootScope.lineData = lineGraphData.dataArray;
+      $rootScope.lineLabels = lineGraphData.labelOrder;
+      $rootScope.totalLossesAvg = lineGraphData.totalLossesAvg;
+      $rootScope.lineGraphStats = lineGraphData.statsObj;
     };
   })
 
   .controller('BarCtrl', function ($scope, $rootScope, filter, getData) {
     $scope.filterArray = [];
     getData.then(function (res) {
-      $scope.res = res;
-      $scope.airportFilter = ['CVG', 'DEN', 'LAX', 'ORD', 'SEA'];
-      let barGraphData = filter.barGraph(res, $scope.airportFilter);
-      $scope.barGraphStats = barGraphData.statsObj;
-      $scope.barData = barGraphData.dataArray;
-      $scope.barLabels = barGraphData.labelOrder;
+      $rootScope.res = res;
+      $rootScope.airportFilter = ['CVG', 'DEN', 'LAX', 'ORD', 'SEA'];
+      let barGraphData = filter.barGraph(res, $rootScope.airportFilter);
+      $rootScope.barStats = barGraphData.statsObj;
+      $rootScope.barData = barGraphData.dataArray;
+      $rootScope.barLabels = barGraphData.labelOrder;
       let standardDeviationArrary = barGraphData.stdDevArray;
       $scope.options = {
         tooltips: {
@@ -224,9 +226,9 @@ angular.module('root-app', ['chart.js'])
         $scope.filterArray.push(name);
       }
       barGraphData = filter.barGraph($scope.res, $scope.filterArray);
-      $scope.barData = barGraphData.dataArray;
-      $scope.barLabels = barGraphData.labelOrder;
-      $scope.barGraphStats = barGraphData.statsObj;
+      $rootScope.barData = barGraphData.dataArray;
+      $rootScope.barLabels = barGraphData.labelOrder;
+      $rootScope.barStats = barGraphData.statsObj;
 
     };
   })
@@ -237,4 +239,28 @@ angular.module('root-app', ['chart.js'])
     $scope.toggle = function (toggle) {
       $scope.metric = toggle;
     };
-  });  
+
+  })
+  .controller('formCtrl', function ($scope, $rootScope, filter) {
+
+    $scope.submit = function () {
+
+      $rootScope.res.push({
+        'Airline Name': $scope.airlineName,
+        'Airport Code': $scope.airportCode,
+        'Incident Date': $scope.incidentDate,
+        'Close Amount': $scope.closeAmount
+      });
+
+      let barGraphData = filter.barGraph($rootScope.res, $rootScope.airportFilter);
+      $rootScope.barData = barGraphData.dataArray;
+      $rootScope.barLabels = barGraphData.labelOrder;
+      $rootScope.barStats = barGraphData.statsObj;
+
+      let lineGraphData = filter.lineGraph($rootScope.res, $rootScope.airlineFilter);
+      $rootScope.lineData = lineGraphData.dataArray;
+      $rootScope.lineLabels = lineGraphData.labelOrder;
+      $rootScope.totalLossesAvg = lineGraphData.totalLossesAvg;
+      $rootScope.lineGraphStats = lineGraphData.statsObj;
+    };
+  });
